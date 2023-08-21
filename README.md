@@ -1,2 +1,2 @@
 # ON DEVELOPMENT 
-See u soon 👌
+coming soon 👌
