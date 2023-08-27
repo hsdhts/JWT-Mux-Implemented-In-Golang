@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gorilla/mux"
+	"github.com/jeypc/go-jwt-mux/controllers/authcontroller"
 	"log"
 	"net/http"
 )
@@ -9,9 +10,9 @@ import (
 func main() {
 	r := mux.NewRouter()
 
-	r.HandleFunc("/login", authController.Login).Methods("POST")
-	r.HandleFunc("/register", authController.Register).Methods("POST")
-	r.HandleFunc("/logout", authController.Logout).Methods("GET")
+	r.HandleFunc("/login", authcontroller.Login).Methods("POST")
+	r.HandleFunc("/register", authcontroller.Register).Methods("POST")
+	r.HandleFunc("/logout", authcontroller.Logout).Methods("GET")
 
 	log.Fatal(http.ListenAndServe(":8080", r))
 }
