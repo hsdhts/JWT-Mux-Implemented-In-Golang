@@ -2,9 +2,9 @@ package authcontroller
 
 import (
 	"encoding/json"
+	"github.com/jeypc/go-jwt-mux/helper"
 	"github.com/jeypc/go-jwt-mux/models"
 	"golang.org/x/crypto/bcrypt"
-	"log"
 	"net/http"
 )
 
@@ -17,7 +17,9 @@ func Register(w http.ResponseWriter, r *http.Request) {
 	var userInput models.User
 	decoder := json.NewDecoder(r.Body)
 	if err := decoder.Decode(&userInput); err != nil {
-		log.Fatal("Gagal mendecode json")
+		response := map[string]string{"message": err.Error()}
+		helper.ResponseJSON(w, http.StatusBadRequest, response)
+		return
 	}
 	defer r.Body.Close()
 
@@ -27,13 +29,12 @@ func Register(w http.ResponseWriter, r *http.Request) {
 
 	//insert to database
 	if err := models.DB.Create(&userInput).Error; err != nil {
-		log.Fatal("gagal menyimpan data")
+		response := map[string]string{"message": err.Error()}
+		helper.ResponseJSON(w, http.StatusInternalServerError, response)
+		return
 	}
-	response, _ := json.Marshal(map[string]string{"message": "success"})
-
-	w.Header().Add("Content-Type", "application/json")
-	w.WriteHeader(http.StatusOK)
-	w.Write(response)
+	response := map[string]string{"message": "success"}
+	helper.ResponseJSON(w, http.StatusOK, response)
 
 }
 
