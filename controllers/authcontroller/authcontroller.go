@@ -26,6 +26,11 @@ func Login(w http.ResponseWriter, r *http.Request) {
 	if err := models.DB.Create(&userInput).Error; err != nil {
 		log.Fatal("Gagal menyimpan Data")
 	}
+
+	response, _ := json.Marshal(map[string]string{"message": "success"})
+	w.Header().Add("Content-Type", "application/json")
+	w.WriteHeader(http.StatusOK)
+	w.Write(response)
 }
 
 func Register(w http.ResponseWriter, r *http.Request) {
